@@ -1,13 +1,20 @@
 package com.filip.customer;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 @Service
-public record CustomerService (
-        CustomerRepository customerRepository,
-        RestTemplate restTemplate) {
+@AllArgsConstructor
+public class CustomerService {
 
+    private CustomerRepository customerRepository;
+    private RestTemplate restTemplate;
+
+    @Transactional
     public void registerCustomer(CustomerRequest customerRequest) {
         Customer customer = Customer.builder()
                 .firstName(customerRequest.firstName())
@@ -23,7 +30,7 @@ public record CustomerService (
 
         // check if fraudster
         FraudCheckResponse fraudCheckResponse = restTemplate.getForObject(
-                "http://localhost:8081/api/v1/fraud/{customerId}",
+                "http://FRAUD/api/v1/fraud/{customerId}",
                 FraudCheckResponse.class,
                 customer.getId()
         );
