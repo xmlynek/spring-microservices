@@ -1,4 +1,4 @@
-package com.filip.fraud;
+package com.filip.clients.fraud;
 
 public record FraudCheckResponse(Boolean isFraudster) {
 }

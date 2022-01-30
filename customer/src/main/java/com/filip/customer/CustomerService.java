@@ -1,8 +1,8 @@
 package com.filip.customer;
 
+import com.filip.clients.fraud.FraudCheckResponse;
+import com.filip.clients.fraud.FraudClient;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
@@ -12,7 +12,7 @@ import org.springframework.web.client.RestTemplate;
 public class CustomerService {
 
     private CustomerRepository customerRepository;
-    private RestTemplate restTemplate;
+    private final FraudClient fraudClient;
 
     @Transactional
     public void registerCustomer(CustomerRequest customerRequest) {
@@ -29,11 +29,8 @@ public class CustomerService {
         customerRepository.saveAndFlush(customer);
 
         // check if fraudster
-        FraudCheckResponse fraudCheckResponse = restTemplate.getForObject(
-                "http://FRAUD/api/v1/fraud/{customerId}",
-                FraudCheckResponse.class,
-                customer.getId()
-        );
+        FraudCheckResponse fraudCheckResponse = fraudClient.isFraudster(customer.getId());
+
         if(fraudCheckResponse.isFraudster()) {
             throw new IllegalStateException("fraudster");
         }
