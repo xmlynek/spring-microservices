@@ -2,6 +2,8 @@ package com.filip.customer;
 
 import com.filip.clients.fraud.FraudCheckResponse;
 import com.filip.clients.fraud.FraudClient;
+import com.filip.clients.notification.NotificationClient;
+import com.filip.clients.notification.NotificationRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +15,7 @@ public class CustomerService {
 
     private CustomerRepository customerRepository;
     private final FraudClient fraudClient;
+    private final NotificationClient notificationClient;
 
     @Transactional
     public void registerCustomer(CustomerRequest customerRequest) {
@@ -35,7 +38,11 @@ public class CustomerService {
             throw new IllegalStateException("fraudster");
         }
 
-
-        // todo: send notification
+        // send notification todo: make it async.
+        notificationClient.sendNotification(new NotificationRequest(
+                customer.getId(),
+                customer.getEmail(),
+                String.format("Hi %s, welcome to Filip Microservices!", customer.getFirstName())
+        ));
     }
 }
