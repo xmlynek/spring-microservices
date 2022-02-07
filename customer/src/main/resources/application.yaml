@@ -16,6 +16,10 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
     show-sql: true
+  rabbitmq:
+    addresses: localhost:5672
+    password: password
+    username: filip
 eureka:
   client:
     service-url:

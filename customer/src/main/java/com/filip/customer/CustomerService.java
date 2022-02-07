@@ -1,5 +1,6 @@
 package com.filip.customer;
 
+import com.filip.amqp.RabbitMQMessageProducer;
 import com.filip.clients.fraud.FraudCheckResponse;
 import com.filip.clients.fraud.FraudClient;
 import com.filip.clients.notification.NotificationClient;
@@ -16,6 +17,7 @@ public class CustomerService {
     private CustomerRepository customerRepository;
     private final FraudClient fraudClient;
     private final NotificationClient notificationClient;
+    private final RabbitMQMessageProducer rabbitMQMessageProducer;
 
     @Transactional
     public void registerCustomer(CustomerRequest customerRequest) {
@@ -38,11 +40,15 @@ public class CustomerService {
             throw new IllegalStateException("fraudster");
         }
 
-        // send notification todo: make it async.
-        notificationClient.sendNotification(new NotificationRequest(
+        // send notification
+        NotificationRequest notificationRequest = new NotificationRequest(
                 customer.getId(),
                 customer.getEmail(),
                 String.format("Hi %s, welcome to Filip Microservices!", customer.getFirstName())
-        ));
+        );
+        rabbitMQMessageProducer.publish(
+                notificationRequest,
+                "internal.exchange",
+                "internal.notification.routing-key");
     }
 }

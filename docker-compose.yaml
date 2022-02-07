@@ -65,6 +65,16 @@ services:
     ports:
       - "9411:9411"
 
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:3.9.11-management-alpine
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: filip
+      RABBITMQ_DEFAULT_PASS: password
+
 networks:
   postgres:
     driver: bridge
