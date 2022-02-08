@@ -29,6 +29,7 @@
     <spring.boot.maven.plugin.version>2.5.7</spring.boot.maven.plugin.version>
     <spring.boot.dependencies.version>2.5.7</spring.boot.dependencies.version>
     <spring.cloud-version>2020.0.3</spring.cloud-version>
+    <image>xmlynek/${project.artifactId}:${project.version}</image>
   </properties>
 
 <!--  all submodules can pick whatever dependency they want -->
@@ -80,6 +81,30 @@
             <execution>
               <goals>
                 <goal>repackage</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+          <groupId>com.google.cloud.tools</groupId>
+          <artifactId>jib-maven-plugin</artifactId>
+          <version>3.2.0</version>
+          <configuration>
+            <from>
+              <image>eclipse-temurin:17@sha256:2b47a8ea946ce1e5365a1562414ed576e378b7b670cadff3fb98ebecf2890cdc</image>
+            </from>
+            <to>
+              <tags>
+                <tag>latest</tag>
+              </tags>
+              <image>${image}</image>
+            </to>
+          </configuration>
+          <executions>
+            <execution>
+              <phase>package</phase>
+              <goals>
+                <goal>build</goal>
               </goals>
             </execution>
           </executions>
