@@ -12,9 +12,13 @@
         <module name="clients" />
         <module name="fraud" />
         <module name="amqp" />
+        <module name="k8s" />
         <module name="eureka-server" />
         <module name="customer" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="k8s" target="17" />
+    </bytecodeTargetLevel>
   </component>
 </project>

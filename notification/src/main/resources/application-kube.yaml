@@ -5,9 +5,9 @@ spring:
   application:
     name: notification
   datasource:
-    username: filip
+    username: xmlynek
     password: password
-    url: jdbc:postgresql://localhost:5434/notification
+    url: jdbc:postgresql://postgres:5432/notification
   jpa:
     show-sql: true
     hibernate:
@@ -17,16 +17,12 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
   rabbitmq:
-    addresses: localhost:5672
+    addresses: rabbitmq:5672
     password: password
     username: filip
-  profiles:
-    active: default
+  zipkin:
+    base-url: http://zipkin:9411
 
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka
 
 rabbitmq:
   exchanges:
@@ -35,4 +31,6 @@ rabbitmq:
     notification: notification.queue
   routing-keys:
     internal-notification: internal.notification.routing-key
-
+eureka:
+  client:
+    enabled: false

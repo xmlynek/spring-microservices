@@ -4,9 +4,9 @@ spring:
   application:
     name: fraud
   datasource:
-    username: filip
+    username: xmlynek
     password: password
-    url: jdbc:postgresql://localhost:5433/fraud
+    url: jdbc:postgresql://postgres:5432/fraud
   jpa:
     hibernate:
       ddl-auto: update
@@ -15,9 +15,8 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
     show-sql: true
-  profiles:
-    active: default
+  zipkin:
+    base-url: http://zipkin:9411
 eureka:
   client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka
+    enabled: false

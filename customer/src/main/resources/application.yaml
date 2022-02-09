@@ -20,6 +20,8 @@ spring:
     addresses: localhost:5672
     password: password
     username: filip
+  profiles:
+    active: default
 eureka:
   client:
     service-url:
